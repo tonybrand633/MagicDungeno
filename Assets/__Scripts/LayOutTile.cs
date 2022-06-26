@@ -122,14 +122,16 @@ public class LayOutTile : MonoBehaviour
                 t.pos = new Vector3(x, maxY - y, 0);
                 tiles[x, y] = t;
 
-                if (rawType == type) 
-                {
-                    continue;
-                }
+                //if (rawType == type) 
+                //{
+                //    continue;
+                //}
                 switch (rawType) 
                 {
                     case "X":
+                        Vector3 tPos = t.pos;                        
                         Mage.singleton.pos = t.pos;
+
                         break;
                 }
             }

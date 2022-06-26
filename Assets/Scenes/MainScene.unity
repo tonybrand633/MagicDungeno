@@ -309,3 +309,31 @@ MonoBehaviour:
   targetTransform: {fileID: 468627979}
   camEasing: 0.1
   followOffset: {x: 0, y: 0, z: 2}
+--- !u!1 &1310816509 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100016, guid: 06d786368719c4ecd931c5fc5fd9bd73,
+    type: 3}
+  m_PrefabInstance: {fileID: 468627978}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1310816510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310816509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30e1c2ab8516e0141b18936f175457ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mTapTime: 0.1
+  mDragDist: 5
+  activeScreenWidth: 1
+  ___________: 0
+  mPhase: 0
+  mouseInfos: []
+  Speed: 5
+  walking: 0
+  walkTarget: {x: 0, y: 0, z: 0}
+  characterTrans: {fileID: 0}

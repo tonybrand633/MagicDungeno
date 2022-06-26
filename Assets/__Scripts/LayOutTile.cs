@@ -80,10 +80,10 @@ public class LayOutTile : MonoBehaviour
 
 
         Tile t;
-        string type,tileTexStr;
+        string type,rawType,tileTexStr;
         int height;
         GameObject go;
-        int maxY = rowCount;
+        int maxY = rowCount-1;
 
 
         for (int y = 0; y < rowCount; y++)
@@ -95,7 +95,7 @@ public class LayOutTile : MonoBehaviour
                 height = 0;
                 tileTexStr = "floor";
 
-                type = roomRow[x].ToString();
+                type = rawType = roomRow[x].ToString();
                 switch (type) 
                 {
                     case " ":
@@ -121,6 +121,17 @@ public class LayOutTile : MonoBehaviour
                 t.tex = tileTexStr;
                 t.pos = new Vector3(x, maxY - y, 0);
                 tiles[x, y] = t;
+
+                if (rawType == type) 
+                {
+                    continue;
+                }
+                switch (rawType) 
+                {
+                    case "X":
+                        Mage.singleton.pos = t.pos;
+                        break;
+                }
             }
         }
     }

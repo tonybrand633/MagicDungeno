@@ -119,7 +119,7 @@ public class LayOutTile : MonoBehaviour
                 t = go.GetComponent<Tile>();
                 t.height = height;
                 t.tex = tileTexStr;
-                t.pos = new Vector3(x, maxY - y, 0);
+                t.pos = new Vector3(x, maxY - y, 0.6f);
                 tiles[x, y] = t;
 
                 //if (rawType == type) 
@@ -129,15 +129,14 @@ public class LayOutTile : MonoBehaviour
                 switch (rawType) 
                 {
                     case "X":
-                        Vector3 tPos = t.pos;                        
-                        Mage.singleton.pos = t.pos;
-
+                        Vector3 tPos = t.pos;
+                        tPos.z = 0;
+                        Mage.singleton.pos = tPos;
                         break;
                 }
             }
         }
     }
-
     // Update is called once per frame
     void Update()
     {

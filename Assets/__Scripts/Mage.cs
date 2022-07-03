@@ -11,6 +11,18 @@ public enum MPhase
 }
 
 [System.Serializable]
+
+public enum ElementType 
+{
+    earth,
+    water,
+    air,
+    fire,
+    aether,
+    none
+}
+
+
 public class MouseInfo 
 {
     public Vector3 loc;
@@ -40,20 +52,26 @@ public class Mage : PT_MonoBehaviour
     public static Mage singleton;
     public static bool DEBUG = true;
 
-    public float mTapTime = 0.1f;
-    public float mDragDist = 5; //定义拖动的最小像素距离
+
 
     public float activeScreenWidth = 1;
 
+    //鼠标信息
     public bool ___________;
     public MPhase mPhase = MPhase.idle;
     public List<MouseInfo> mouseInfos = new List<MouseInfo>();
+    public float mTapTime = 0.1f;
+    public float mDragDist = 5; //定义拖动的最小像素距离
 
     //移动代码
     public float Speed = 2;
     public bool walking = false;
     public Vector3 walkTarget;
     public Transform characterTrans;
+    public Vector2 SpeedVec;
+
+    //指示器
+    public GameObject tapIndicatorPrefab;
 
 
 
@@ -153,8 +171,24 @@ public class Mage : PT_MonoBehaviour
 
     void FixedUpdate()
     {
+        //SpeedVec = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
+
+        //WalkByKeyBoard();
+
+
+        //if (rigidbody.velocity == Vector3.zero)
+        //{
+        //    walking = false;
+        //}
+
         if (walking)
         {
+            //Debug.Log("walkTarget" + walkTarget);
+            //Debug.Log("position" + pos);
+            //Debug.Log("距离" + (walkTarget - pos).magnitude);
+            //Debug.Log("比较量" + Speed * Time.fixedDeltaTime);
+            //Debug.Log("速度" + rigidbody.velocity);
+
             if ((walkTarget - pos).magnitude < Speed * Time.fixedDeltaTime)
             {
                 pos = walkTarget;
@@ -165,10 +199,10 @@ public class Mage : PT_MonoBehaviour
                 rigidbody.velocity = (walkTarget - pos).normalized * Speed;
             }
         }
-        else 
+        else
         {
             rigidbody.velocity = Vector3.zero;
-        }    
+        }
     }
 
     public MouseInfo lastMouseInfo 
@@ -221,6 +255,24 @@ public class Mage : PT_MonoBehaviour
         return mInfo;
     }
 
+    public void WalkByKeyBoard() 
+    {
+        if (SpeedVec.magnitude > 0)
+        {
+            walking = true;
+            float rZ = Mathf.Atan2(SpeedVec.y, SpeedVec.x) * Mathf.Rad2Deg;
+            rigidbody.velocity = SpeedVec * Speed;
+            Debug.Log(rZ);
+            //characterTrans.rotation = Quaternion.Euler(0, 0, rZ); //可行
+            characterTrans.eulerAngles = Vector3.forward * rZ; //不可行
+        }
+        else 
+        {
+            rigidbody.velocity = Vector3.zero;
+        }
+        
+    }
+
     public void WalkTo(Vector3 xTarget) 
     {
         walkTarget = xTarget;
@@ -257,6 +309,7 @@ public class Mage : PT_MonoBehaviour
         if (DEBUG)
         {
             WalkTo(lastMouseInfo.loc);
+            ShowTap(lastMouseInfo.loc);
             Debug.Log("MouseTap");
         }
     }
@@ -265,6 +318,7 @@ public class Mage : PT_MonoBehaviour
     {
         if (DEBUG)
         {
+            WalkTo(mouseInfos[mouseInfos.Count - 1].loc);
             Debug.Log("MouseDrag");
         }
     }
@@ -273,8 +327,15 @@ public class Mage : PT_MonoBehaviour
     {
         if (DEBUG)
         {
+            StopWalking();
             Debug.Log("MouseDragUp");
         }
+    }
+
+    public void ShowTap(Vector3 loc) 
+    {
+        GameObject go = Instantiate(tapIndicatorPrefab);
+        go.transform.position = loc;
     }
 
     private void OnCollisionEnter(Collision collision)

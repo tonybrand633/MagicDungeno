@@ -104,6 +104,7 @@ public class Utils : MonoBehaviour {
 			Vector3 loc = Input.mousePosition;
 			loc.z = -Camera.main.transform.position.z;
 			loc = Camera.main.ScreenToWorldPoint(loc);
+			Debug.Log(loc);
 			return(loc);
 		}
 	}

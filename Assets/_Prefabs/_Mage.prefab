@@ -697,6 +697,7 @@ GameObject:
   - component: {fileID: 400016}
   - component: {fileID: 5400000}
   - component: {fileID: 13600000}
+  - component: {fileID: 1310816510}
   m_Layer: 0
   m_Name: _Mage
   m_TagString: Mage
@@ -749,6 +750,28 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: -0.5}
+--- !u!114 &1310816510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30e1c2ab8516e0141b18936f175457ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mTapTime: 0.1
+  mDragDist: 5
+  activeScreenWidth: 1
+  ___________: 0
+  mPhase: 0
+  mouseInfos: []
+  Speed: 5
+  walking: 0
+  walkTarget: {x: 0, y: 0, z: 0}
+  characterTrans: {fileID: 0}
 --- !u!1 &100018
 GameObject:
   m_ObjectHideFlags: 0

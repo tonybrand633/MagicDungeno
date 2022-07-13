@@ -7,7 +7,7 @@ public class CameraFollow : PT_MonoBehaviour
     public static CameraFollow singleton;
     public Transform targetTransform;
     public float camEasing = 0.1f;
-    public Vector3 followOffset = new Vector3(0, 0, -2);
+    public Vector3 followOffset = new Vector3(0, 0, -10);
 
 
     void Awake()
@@ -31,6 +31,6 @@ public class CameraFollow : PT_MonoBehaviour
 
     void FixedUpdate()
     {
-        pos = Vector3.Lerp(pos, targetTransform.transform.position + followOffset, camEasing);    
+        pos = Vector3.Lerp(pos, targetTransform.transform.position+followOffset, camEasing);    
     }
 }

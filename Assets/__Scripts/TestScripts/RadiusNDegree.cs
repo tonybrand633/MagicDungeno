@@ -42,7 +42,8 @@ public class RadiusNDegree : MonoBehaviour
 
             transform.Translate(InputVec * Time.deltaTime * 5, Space.World);
             Debug.Log(rZ);
-            transform.eulerAngles = Vector3.forward * rZ;
+            //transform.eulerAngles = Vector3.forward * rZ;
+            transform.rotation = Quaternion.Euler(0, 0, rZ);
         }
         
     }

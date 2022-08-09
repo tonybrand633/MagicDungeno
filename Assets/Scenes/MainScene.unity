@@ -177,13 +177,41 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1310816510, guid: 06d786368719c4ecd931c5fc5fd9bd73, type: 3}
+      propertyPath: DEBUG
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310816510, guid: 06d786368719c4ecd931c5fc5fd9bd73, type: 3}
       propertyPath: Speed
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310816510, guid: 06d786368719c4ecd931c5fc5fd9bd73, type: 3}
+      propertyPath: activeScreenWidth
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 1310816510, guid: 06d786368719c4ecd931c5fc5fd9bd73, type: 3}
       propertyPath: tapIndicatorPrefab
       value: 
       objectReference: {fileID: 100000, guid: 65bee36374982469f8b4797b1b515e38, type: 3}
+    - target: {fileID: 1310816510, guid: 06d786368719c4ecd931c5fc5fd9bd73, type: 3}
+      propertyPath: elementPrefabs.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310816510, guid: 06d786368719c4ecd931c5fc5fd9bd73, type: 3}
+      propertyPath: elementPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 100000, guid: 66ad41f2a71ba4b23a3c246befe4bde8, type: 3}
+    - target: {fileID: 1310816510, guid: 06d786368719c4ecd931c5fc5fd9bd73, type: 3}
+      propertyPath: elementPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 100000, guid: daf45af0a167c4df29c284e530022191, type: 3}
+    - target: {fileID: 1310816510, guid: 06d786368719c4ecd931c5fc5fd9bd73, type: 3}
+      propertyPath: elementPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 100000, guid: cf5e7183204c8448098d58443a84aa37, type: 3}
+    - target: {fileID: 1310816510, guid: 06d786368719c4ecd931c5fc5fd9bd73, type: 3}
+      propertyPath: elementPrefabs.Array.data[3]
+      value: 
+      objectReference: {fileID: 100000, guid: 993e02f0129934f5291f9f3daeaa9e26, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06d786368719c4ecd931c5fc5fd9bd73, type: 3}
 --- !u!4 &468627979 stripped
@@ -230,7 +258,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.01886791, g: 0.01886791, b: 0.01886791, a: 0}
+  m_BackGroundColor: {r: 0.1882353, g: 0.2509804, b: 0.1882353, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -239,7 +267,7 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: -0.2
     y: 0
     width: 1
     height: 1
@@ -290,14 +318,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 100000, guid: 84bf7187657d043eda6a4404d8d5abf6, type: 3}
+  groundPrefab: {fileID: 7027839740607625056, guid: 38c1df5a1ff18af4cb9d60dd48e6a877,
+    type: 3}
   tileAnchor: {fileID: 0}
   roomNumder: 0
   roomAsset: {fileID: 4900000, guid: bdef848fe5fe34d08b3a284654524ea0, type: 3}
   tileTexs:
   - texStr: floor
-    tex: {fileID: 2800000, guid: f769ef7f94b744c1cb8a76a1b7244bab, type: 3}
+    tex: {fileID: 2800000, guid: 276bd0d2c1f7ae942839d1f23ad6f2a0, type: 3}
   - texStr: wall
-    tex: {fileID: 2800000, guid: 51913b142672e46bfb3c90299e5f38f4, type: 3}
+    tex: {fileID: 2800000, guid: e0151d2c7bc1bfc4a82177d0298dd56e, type: 3}
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,5 +402,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2000000, guid: a6925daf9f16f8f488b466f913730bf6, type: 3}
+      propertyPath: m_Depth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2000000, guid: a6925daf9f16f8f488b466f913730bf6, type: 3}
+      propertyPath: m_NormalizedViewPortRect.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2000000, guid: a6925daf9f16f8f488b466f913730bf6, type: 3}
+      propertyPath: m_NormalizedViewPortRect.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2000000, guid: a6925daf9f16f8f488b466f913730bf6, type: 3}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2000000, guid: a6925daf9f16f8f488b466f913730bf6, type: 3}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300006, guid: a6925daf9f16f8f488b466f913730bf6, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3abf473d50106f44c9611c2c76fd9a91, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6925daf9f16f8f488b466f913730bf6, type: 3}

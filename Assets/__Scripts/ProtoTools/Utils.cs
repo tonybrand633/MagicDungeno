@@ -104,6 +104,7 @@ public class Utils : MonoBehaviour {
 			Vector3 loc = Input.mousePosition;
 			loc.z = -Camera.main.transform.position.z;
 			loc = Camera.main.ScreenToWorldPoint(loc);
+			//Debug.Log(loc);
 			return(loc);
 		}
 	}
@@ -225,9 +226,11 @@ public class Utils : MonoBehaviour {
 	
 	// This function will iteratively climb up the transform.parent tree
 	//   until it either finds a parent with a tag != "Untagged" or no parent
+	// 递归直到找到有tag的父物体
 	public static GameObject FindTaggedParent(GameObject go) {
 		// If this gameObject has a tag
-		if (go.tag != "Untagged") {
+		if (go.tag != "Untagged") 
+		{
 			// then return this gameObject
 			return(go);
 		}

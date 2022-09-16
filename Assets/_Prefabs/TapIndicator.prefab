@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 400000}
   - component: {fileID: 3300000}
   - component: {fileID: 2300000}
+  - component: {fileID: 896991095433437513}
   m_Layer: 0
   m_Name: TapIndicator
   m_TagString: Untagged
@@ -79,3 +80,31 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &896991095433437513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8007ad529f3794f4ca541e1a26bea1fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ptm_locs: []
+  ptm_start: 0
+  ptm_duration: 0
+  ptm_state: 0
+  ptm_easing: ',InOut|'
+  ptm_u: 0
+  ptm_u2: 0
+  lifeTime: 0.4
+  scales:
+  - 0
+  - 0.8
+  - 0.4
+  colors:
+  - {r: 0.9150943, g: 0.13381095, b: 0.13381095, a: 0.54901963}
+  - {r: 0.4245283, g: 0.07008721, b: 0.07008721, a: 1}
+  - {r: 0.4433962, g: 0.21124065, b: 0.21124065, a: 0}

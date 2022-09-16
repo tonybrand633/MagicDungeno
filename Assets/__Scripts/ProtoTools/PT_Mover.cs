@@ -57,17 +57,20 @@ public class PT_Mover : PT_MonoBehaviour {
 		transform.rotation = l.rot;
 		transform.localScale = l.scale;
 
-		if (ptm_mats == null) {
-			Renderer[] rends = GetComponentsInChildren<Renderer>();
-			ptm_mats = new Material[rends.Length];
-			for (int i=0; i<rends.Length; i++) {
-				ptm_mats[i] = rends[i].material;
-			}
-		}
-		foreach (Material m in ptm_mats) {
-			m.color = l.color;
-		}
-	}
+        if (ptm_mats == null)
+        {
+            Renderer[] rends = GetComponentsInChildren<Renderer>();
+            ptm_mats = new Material[rends.Length];
+            for (int i = 0; i < rends.Length; i++)
+            {
+                ptm_mats[i] = rends[i].material;
+            }
+        }
+        foreach (Material m in ptm_mats)
+        {
+            m.color = l.color;
+        }
+    }
 
 	public void PT_StartMove( IEnumerable<PT_Loc> locs, float timeDuration=1, float timeStart=float.NaN ) {
 		if (float.IsNaN(timeStart)) timeStart = Time.time;

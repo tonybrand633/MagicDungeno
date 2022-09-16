@@ -1377,11 +1377,12 @@ MonoBehaviour:
   time_Start: 0
   time_Duration: 0
   u: 0
-  EasingWay: 
+  curveType: 0
   endPoint: {fileID: 1394540702}
   moveState: 0
   startMove: 0
   input: {fileID: 729372106}
+  startPoint: {x: 0, y: 0, z: 0}
 --- !u!1 &2033684273
 GameObject:
   m_ObjectHideFlags: 0

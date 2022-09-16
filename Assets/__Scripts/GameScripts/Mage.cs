@@ -10,17 +10,6 @@ public enum MPhase
     drag
 }
 
-[System.Serializable]
-
-public enum ElementType 
-{
-    earth,
-    water,
-    air,
-    fire,
-    aether,
-    none
-}
 
 
 public class MouseInfo 
@@ -74,13 +63,37 @@ public class Mage : PT_MonoBehaviour
     //技能信息
     public GameObject[] elementPrefabs;
     public float elementRotDis = 0.5f;//旋转半径
+    public float eachRotDis = 0.2f;
     public float elementRotSpeed = 1f;
     public int maxNumElementSelect = 1;
-
+    public string actionStartTag;   
     public List<Element> SelectElements = new List<Element>();
 
     //指示器
     public GameObject tapIndicatorPrefab;
+
+    //LineRenderer
+    public Color[] elementColors;
+    List<Vector3> LinePts;
+    protected LineRenderer liner;
+    protected float LineZ = -0.1f;
+
+    public float LineMinDelta = 0.1f;
+    public float LineMaxDelta = 0.5f;
+    public float LineMaxLength = 8f;
+
+    public float totalLineLength;
+
+
+    //法术
+    public GameObject FireGround;
+    public Transform SpellAnchor;
+
+
+    //public 变量对所有类可见
+    //private 变量对本类可见
+    //protected 变量对本类或子类可见
+    
 
 
 
@@ -90,8 +103,14 @@ public class Mage : PT_MonoBehaviour
         singleton = this;
         mPhase = MPhase.idle;
 
+        //初始化LinePoints
+        LinePts = new List<Vector3>();
         characterTrans = transform.Find("CharacterTrans");
+        liner = GetComponent<LineRenderer>();
+        liner.enabled = true;
 
+        GameObject goSpellAnchor = new GameObject("Spell Anchor");
+        SpellAnchor = goSpellAnchor.transform;
     }
 
     // Start is called before the first frame update
@@ -162,8 +181,6 @@ public class Mage : PT_MonoBehaviour
                 {
                     mPhase = MPhase.drag;
                 }
-
-
             }
         }
 
@@ -194,9 +211,9 @@ public class Mage : PT_MonoBehaviour
     void FixedUpdate()
     {
         //用键盘来行走
-        //SpeedVec = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
+        SpeedVec = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
 
-        //WalkByKeyBoard();
+        WalkByKeyBoard();
 
 
         //if (rigidbody.velocity == Vector3.zero)
@@ -204,28 +221,28 @@ public class Mage : PT_MonoBehaviour
         //    walking = false;
         //}
 
-        if (walking)
-        {
-            //Debug.Log("walkTarget" + walkTarget);
-            //Debug.Log("position" + pos);
-            //Debug.Log("距离" + (walkTarget - pos).magnitude);
-            //Debug.Log("比较量" + Speed * Time.fixedDeltaTime);
-            //Debug.Log("速度" + rigidbody.velocity);
+        //if (walking)
+        //{
+        //    //Debug.Log("walkTarget" + walkTarget);
+        //    //Debug.Log("position" + pos);
+        //    //Debug.Log("距离" + (walkTarget - pos).magnitude);
+        //    //Debug.Log("比较量" + Speed * Time.fixedDeltaTime);
+        //    //Debug.Log("速度" + rigidbody.velocity);
 
-            if ((walkTarget - pos).magnitude < Speed * Time.fixedDeltaTime)
-            {
-                pos = walkTarget;
-                StopWalking();
-            }
-            else
-            {
-                rigidbody.velocity = (walkTarget - pos).normalized * Speed;
-            }
-        }
-        else
-        {
-            rigidbody.velocity = Vector3.zero;
-        }
+        //    if ((walkTarget - pos).magnitude < Speed * Time.fixedDeltaTime)
+        //    {
+        //        pos = walkTarget;
+        //        StopWalking();
+        //    }
+        //    else
+        //    {
+        //        rigidbody.velocity = (walkTarget - pos).normalized * Speed;
+        //    }
+        //}
+        //else
+        //{
+        //    rigidbody.velocity = Vector3.zero;
+        //}
     }
 
     public MouseInfo lastMouseInfo 
@@ -326,20 +343,23 @@ public class Mage : PT_MonoBehaviour
 
         //将圆圈划分到各个旋转道具
         float rotPerElement = tau/ SelectElements.Count;
-        Debug.Log(rotPerElement);
+        //Debug.Log(rotPerElement);
 
         //基于时间来设置旋转基础角度（theta0）
         theta0 = elementRotSpeed * Time.time * tau;
+        //Debug.Log("Theta0:"+theta0);
 
         for (int i = 0; i < SelectElements.Count; i++)
         {
             //确定每个道具的旋转度
             theta = theta0 + i * rotPerElement;
+            //Debug.Log("Theta:"+theta+"i:"+i*rotPerElement);
             el = SelectElements[i];
 
-            //使用"简单"的三角函数将角度转化为单位矢量
+            //使用"简单"的三角函数将角度转化为单位矢量-让它做圆周运动
             vec = new Vector3(Mathf.Cos(theta), Mathf.Sin(theta), 0);
             vec *= elementRotDis;
+            //vec *= (i + 1) * eachRotDis;
             vec.z = -0.5f;
             el.transform.localPosition = vec;
         }
@@ -393,27 +413,63 @@ public class Mage : PT_MonoBehaviour
     {
         if (DEBUG) 
         {
-            Debug.Log("MouseDown");
+            Debug.Log("MouseDown");            
+        }
+        GameObject hitGo = mouseInfos[0].hitInfo.collider.gameObject;
+        
+        GameObject parentGo = Utils.FindTaggedParent(hitGo);
+        //Debug.Log(parentGo.name);
+        if (parentGo == null)
+        {
+            actionStartTag = "";
+        }
+        else 
+        {
+            actionStartTag = parentGo.tag;
         }
     }
 
     void MouseTap() 
     {
-        WalkTo(lastMouseInfo.loc);
-        ShowTap(lastMouseInfo.loc);
         if (DEBUG)
         {
             Debug.Log("MouseTap");
+        }
+
+        switch (actionStartTag) 
+        {
+            case "Mage":
+                break;
+            case "Ground":
+                WalkTo(lastMouseInfo.loc);
+                ShowTap(lastMouseInfo.loc);
+                break;
         }
     }
 
     void MouseDrag()
     {
-        WalkTo(mouseInfos[mouseInfos.Count - 1].loc);
         if (DEBUG)
         {            
             Debug.Log("MouseDrag");
         }
+        //只有从地面开始拖动才会有效
+        if (actionStartTag!="Ground") 
+        {
+            return;
+        }
+
+        //如果没有道具被选中，玩家应该随着鼠标移动
+        if (SelectElements.Count == 0)
+        {
+            //移动到当前mouseInfos的位置
+            WalkTo(mouseInfos[mouseInfos.Count - 1].loc);
+        }
+        else 
+        {
+            AddPointToLiner(mouseInfos[mouseInfos.Count - 1].loc);
+        }
+
     }
 
     void MouseDragUp()
@@ -423,6 +479,20 @@ public class Mage : PT_MonoBehaviour
         {
             Debug.Log("MouseDragUp");
         }
+
+        if (actionStartTag!="Ground") 
+        {
+            return;
+        }
+        if (SelectElements.Count == 0)
+        {
+            StopWalking();
+        }        
+        else 
+        {
+            CastGroundSpell();
+            ClearLiner();
+        }
     }
 
     public void ShowTap(Vector3 loc) 
@@ -430,6 +500,109 @@ public class Mage : PT_MonoBehaviour
         GameObject go = Instantiate(tapIndicatorPrefab);
         go.transform.position = loc;
     }
+
+    //=================LinerRendererd代码====================//
+
+    //为线条添加新的坐标
+    void AddPointToLiner(Vector3 pt) 
+    {        
+        pt.z = LineZ;
+        if (LinePts.Count == 0) 
+        {
+            LinePts.Add(pt);
+            totalLineLength = 0;
+            return;
+        }
+
+        //超过最大长度就return
+        if (totalLineLength>LineMaxLength) 
+        {
+            return;
+        }
+
+        Vector3 ptLast = LinePts[LinePts.Count - 1];
+        Vector3 dir = ptLast - pt;
+        float dirDelta = dir.magnitude;
+        //Debug.Log(dirDelta);
+        dir.Normalize();
+
+        
+
+        //加上两点的方向向量的模长  --   这个地方的dirDelta相当于每一个点的长度相加
+        totalLineLength += dirDelta;
+
+        //如果两点距离太近了，则放弃添加
+        if (dirDelta<LineMinDelta) 
+        {
+            return; 
+        }
+
+        //如果大于最远距离则为附加坐标
+        if (dirDelta>LineMaxDelta) 
+        {
+            //在两者之间添加附加坐标
+            float NumToAdd = Mathf.Ceil(dirDelta / LineMinDelta);            
+            float MidDelta = dirDelta / NumToAdd;
+            Vector3 ptMid;
+            for (int i = 1; i < NumToAdd; i++)
+            {
+                ptMid = ptLast + (dir * MidDelta * i);
+                LinePts.Add(ptMid);
+            }            
+        }
+        LinePts.Add(pt);
+        UpdateLiner();
+        //LinePts.Add(pt);        
+        //UpdateLiner();
+    }
+
+    //使用坐标更新LinerRenderer
+    void UpdateLiner() 
+    {
+        int el = (int)SelectElements[0].elementType;
+        //基于颜色设定线条的颜色
+        liner.startColor = elementColors[el];
+        liner.endColor = elementColors[el];
+
+        //更新将要释放的法术外观
+        liner.positionCount = LinePts.Count;
+        for (int i = 0; i < LinePts.Count; i++)
+        {
+            liner.SetPosition(i, LinePts[i]);
+        }
+        liner.enabled = true;
+    }
+
+    void CastGroundSpell() 
+    {
+        if (SelectElements.Count == 0) 
+        {
+            return;
+        }
+
+        ElementType type = SelectElements[0].elementType;
+        switch (type) 
+        {
+            case ElementType.fire:
+                foreach (Vector3 pt in LinePts) 
+                {
+                    GameObject go = Instantiate(FireGround) as GameObject;
+                    go.transform.parent = SpellAnchor;
+                    go.transform.position = pt;
+                }
+                break;
+        }
+
+        ClearElements();
+
+    }
+
+    public void ClearLiner() 
+    {
+        liner.enabled = false;
+        LinePts.Clear();
+    }
+
 
     private void OnCollisionEnter(Collision collision)
     {

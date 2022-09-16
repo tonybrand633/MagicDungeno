@@ -2,6 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ElementType
+{
+    earth,
+    water,
+    air,
+    fire,
+    aether,
+    none
+}
+
 public class Element : PT_MonoBehaviour
 {
     public ElementType elementType;

@@ -10,13 +10,14 @@ public class BTools : MonoBehaviour
 
 
     public float u;
-    public string EasingWay;    
+    public CurveType curveType;
+    public string curve = "Linear";
     public Transform endPoint;
     public MoveState moveState = MoveState.preMove;
     public bool startMove;
 
     //用来监听输入的文本lifeTime
-    public InputField input;
+    public InputField input;    
 
 
     public Vector3 startPoint;
@@ -46,10 +47,41 @@ public class BTools : MonoBehaviour
                 time_Duration = res;
             }             
         }
+        ParseCurveType(curveType);
+
         
         if (startMove) 
         {
             Move();
+        }
+    }
+
+    void ParseCurveType(CurveType cType) 
+    {
+        Debug.Log(cType);
+        switch (cType) 
+        {
+            case CurveType.Sin:
+                curve = "Sin";
+                break;
+            case CurveType.SinIn:
+                curve = "SinIn";
+                break;
+            case CurveType.In:
+                curve = "In";
+                break;
+            case CurveType.Linear:
+                curve = "Linear";
+                break;
+            case CurveType.SinOut:
+                curve = "SinOut";
+                break;
+            case CurveType.InOut:
+                curve = "InOut";
+                break;
+            case CurveType.Out:
+                curve = "Out";
+                break;
         }
     }
 
@@ -63,20 +95,21 @@ public class BTools : MonoBehaviour
     public void Move()
     {
         u = (Time.time - time_Start) / time_Duration;
-
-        if (u < 0)
+        float u2 = ParseBazier.ParseCurve(u, curve);
+        Debug.Log(u2);
+        if (u2 < 0)
         {
             moveState = MoveState.preMove;
             startMove = false;
         }
-        else if (u > 1)
+        else if (u2 > 1)
         {
             moveState = MoveState.endMove;
         }
         else
         {
             moveState = MoveState.Move;
-            this.transform.position = (1 - u) * startPoint + u * endPoint.position;
+            this.transform.position = (1 - u2) * startPoint + u2 * endPoint.position;
 
         }
     }    
